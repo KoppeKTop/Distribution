@@ -230,12 +230,12 @@ int Coord<CoordinateType>::mDefDims = 2;
 template <class CoordinateType>
 int Coord<CoordinateType>::instances = 0;
 
-//template < class CoordinateType >
-ostream& operator <<(ostream& stream, const iCoord & c)
+template < class CoordinateType >
+ostream& operator <<(ostream& stream, const <CoordinateType> & c)
 {
 	//stream << "(";
 	stream << c.GetCoord(0);
-	for (int d = 1; d < iCoord::GetDefDims(); ++d)
+	for (int d = 1; d < <CoordinateType>::GetDefDims(); ++d)
 	{
 		stream << "\t" << c.GetCoord(d);
 	}
