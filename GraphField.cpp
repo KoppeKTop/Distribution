@@ -17,11 +17,12 @@ using std::endl;
 ChildNode::ChildNode()
 {
 	_nodeState = STATE_EMPTY;
+	_data = 0;
 }
 
 void ChildNode::GetIndex(const iCoord &c, int & charNum, int & biteNum) const
 {
-	for (int dim; dim<iCoord::GetDefDims(); ++dim) {
+	for (int dim = 0; dim<iCoord::GetDefDims(); ++dim) {
 		if (c[dim] > BLOCK_DIM_SIZE) {
 			//cerr << "Wrong coord to read in ChildNode: " << c << endl;
 			exit(2);
@@ -84,6 +85,42 @@ void ChildNode::Set(const iCoord &c)
 			cerr << "Unknown state\n";
 			exit(7);
 	}
+}
+
+unsigned char countbits_bk_method (unsigned char b)
+{
+	unsigned char count;
+	
+	for (count = 0; b != 0; count++)
+	{
+		b &= b - 1; // this clears the LSB-most set bit
+	}
+	
+	return (count);
+}
+
+int countbits(unsigned char c)
+{
+	static unsigned char * parity_array = NULL;
+	if (!parity_array) {
+		parity_array = new unsigned char[256];
+		for (int i = 0; i < 256; ++i) {
+			parity_array[i] = countbits_bk_method((unsigned char)i);
+		}
+	}
+	return parity_array[c];
+}
+
+int ChildNode::CountSet() const
+{
+	int res = 0;
+	if (_data) {
+		const int sz = GetSize()/BITES_IN_BYTE;
+		for (int i = 0; i < sz; ++i) {
+			res += countbits(_data[i]);
+		}
+	}
+	return res;
 }
 
 void ChildNode::CheckState()
@@ -184,7 +221,7 @@ int GraphField::Get(const iCoord & c) const throw(OutOfBoundError)
 		else
 			return _defValue;
 	}
-	throw OutOfBoundError();
+	throw OutOfBoundError(__FILE__, __LINE__);
 }
 
 void GraphField::Set(const iCoord & c) throw(OutOfBoundError)
@@ -194,7 +231,7 @@ void GraphField::Set(const iCoord & c) throw(OutOfBoundError)
 		_children[ind].Set(c % BLOCK_DIM_SIZE);
 		return;
 	}
-	throw OutOfBoundError();
+	throw OutOfBoundError(__FILE__, __LINE__);
 }
 
 void GraphField::Clear()
@@ -202,6 +239,15 @@ void GraphField::Clear()
 	for (int node = 0; node < _nodesCnt; ++node) {
 		_children[node].Clear();
 	}
+}
+
+int GraphField::CountSet()	const
+{
+	int res = 0;
+	for (int node = 0; node < _nodesCnt; ++node) {
+		res += _children[node].CountSet();
+	}
+	return res;
 }
 
 GraphField::~GraphField()

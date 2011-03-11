@@ -47,6 +47,7 @@ public:
 	ChildNode();
 	bool IsSet(const iCoord &c) const;
 	void Set(const iCoord &c);
+	int CountSet()	const;
 	void Clear();
 	~ChildNode();
 protected:
@@ -64,10 +65,12 @@ public:
 	GraphField(const iCoord & size, int defValue=0, int fillValue=1);
 	int Get(const iCoord & c) const throw(OutOfBoundError);
 	void Set(const iCoord & c) throw(OutOfBoundError);
+	int CountSet()	const;
 	// TODO:
 	// void UnSet(const Coord & c);
 	void Clear();
 	~GraphField();
+	iCoord & size()	{	return _size;	}
 protected:
 	bool InBounds(const iCoord & c) const;
 	int GetNodeIndex(const iCoord & c) const;

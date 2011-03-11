@@ -23,10 +23,20 @@ using namespace std;
 
 class OutOfBoundError: public exception
 {
+public:
+	OutOfBoundError(const char * filename, const int line)
+	{
+		char msg_str[] = "Coordinate index out of bounds on: %s:%d";
+		m_what_str = (char *)malloc(strlen(msg_str) + strlen(filename) + 15);
+		sprintf(m_what_str, "Coordinate index out of bounds on: %s:%d\n", filename, line);
+	}
 	virtual const char* what() const throw()
 	{
-		return "Coordinate index out of bounds";
+		return m_what_str;
 	}
+	
+private:
+	char * m_what_str;
 };
 
 class SizeError: public exception
@@ -45,7 +55,7 @@ public:
 	Coord(CoordinateType=0, CoordinateType=0, CoordinateType=0, CoordinateType=0);
 	Coord(const vector<CoordinateType> v)	{
 		if (v.size() != Coord::GetDefDims()) {
-			throw OutOfBoundError();
+			throw OutOfBoundError(__FILE__, __LINE__);
 		}
 		for (int dim = 0; dim < Coord::GetDefDims(); ++dim) {
 			mCV[dim] = v[dim];
@@ -63,11 +73,13 @@ public:
 	Coord operator+ (const Coord &) const;
 	Coord operator% (const Coord &) const;
 	Coord operator- (const Coord &) const;
+	Coord operator* (const Coord &) const;
 	
 	Coord operator+ (const CoordinateType) const;
 	Coord operator% (const CoordinateType) const;
 	Coord operator- (const CoordinateType) const;
 	Coord operator/ (const CoordinateType) const;
+	Coord operator* (const CoordinateType) const;
 	
 	bool operator== (const Coord &) const;
 	bool operator< (const Coord &) const;
@@ -77,7 +89,6 @@ public:
 	bool operator!= (const Coord &) const;
 	
 	Coord & operator= (const Coord & rhs);
-	Coord & operator= (const vector<CoordinateType> &)
 	
 	static int GetDefDims()	{	return	mDefDims;	}
 	static void SetDefDims(int dims)
@@ -90,7 +101,7 @@ public:
 	throw(OutOfBoundError);
 	CoordinateType operator[](const int ind) const
 	throw(OutOfBoundError)	{return GetCoord(ind); }
-	vector<CoordinateType> to_vec() const;
+	vector<CoordinateType> * to_vec() const;
 private:
 	CoordinateType mCV[MAX_DIMS];
 	int mDims;
@@ -106,7 +117,7 @@ typedef Coord<double> dCoord;
 typedef vector<iCoord> CoordVec;
 
 template < class CoordinateType >
-Coord<CoordinateType>::Coord(CoordinateType X, CoordinateType Y, CoordinateType Z, , CoordinateType V)
+Coord<CoordinateType>::Coord(CoordinateType X, CoordinateType Y, CoordinateType Z, CoordinateType V)
 {
 	Coord<CoordinateType>::instances += 1;
 	
@@ -162,7 +173,7 @@ throw(OutOfBoundError)
 	if (this->CheckBounds(num)) {
 		return mCV[num];
 	}
-	throw OutOfBoundError();
+	throw OutOfBoundError(__FILE__, __LINE__);
 }
 
 template < class CoordinateType >
@@ -173,7 +184,7 @@ throw(OutOfBoundError)
 		this->mCV[num] = val;
 		return;
 	}
-	throw OutOfBoundError();
+	throw OutOfBoundError(__FILE__, __LINE__);
 }
 
 template < class CoordinateType >
@@ -213,6 +224,15 @@ Coord<CoordinateType> Coord<CoordinateType>::operator- (const Coord<CoordinateTy
 }
 
 template < class CoordinateType >
+Coord<CoordinateType> Coord<CoordinateType>::operator* (const Coord<CoordinateType> & rhs) const
+{
+	Coord res;
+	for (int i = 0; i < Coord<CoordinateType>::mDefDims; ++i)
+		res.SetCoord(i, this->GetCoord(i) * rhs.GetCoord(i));
+	return res;
+}
+
+template < class CoordinateType >
 Coord<CoordinateType> Coord<CoordinateType>::operator/ (const CoordinateType divide) const
 {
 	Coord<CoordinateType> res(*this);
@@ -226,7 +246,7 @@ Coord<CoordinateType> Coord<CoordinateType>::operator/ (const CoordinateType div
 template < class CoordinateType >
 Coord<CoordinateType> Coord<CoordinateType>::operator+ (const CoordinateType rhs) const
 {
-	Coord<CoordinateType> tmp(rhs,rhs,rhs);
+	Coord<CoordinateType> tmp(rhs,rhs,rhs, rhs);
 	Coord<CoordinateType> res = *this + tmp;
 	return res;
 }
@@ -234,7 +254,7 @@ Coord<CoordinateType> Coord<CoordinateType>::operator+ (const CoordinateType rhs
 template < class CoordinateType >
 Coord<CoordinateType> Coord<CoordinateType>::operator% (const CoordinateType rhs) const
 {
-	Coord<CoordinateType> tmp(rhs,rhs,rhs);
+	Coord<CoordinateType> tmp(rhs,rhs,rhs, rhs);
 	Coord<CoordinateType> res = *this % tmp;
 	return res;
 }
@@ -242,8 +262,16 @@ Coord<CoordinateType> Coord<CoordinateType>::operator% (const CoordinateType rhs
 template < class CoordinateType >
 Coord<CoordinateType> Coord<CoordinateType>::operator- (const CoordinateType rhs) const
 {
-	Coord<CoordinateType> tmp(rhs,rhs,rhs);
+	Coord<CoordinateType> tmp(rhs,rhs,rhs, rhs);
 	Coord<CoordinateType> res = *this - tmp;
+	return res;
+}
+
+template < class CoordinateType >
+Coord<CoordinateType> Coord<CoordinateType>::operator* (const CoordinateType rhs) const
+{
+	Coord<CoordinateType> tmp(rhs,rhs,rhs, rhs);
+	Coord<CoordinateType> res = *this * tmp;
 	return res;
 }
 
@@ -319,7 +347,7 @@ Coord<CoordinateType> & Coord<CoordinateType>::operator= (const Coord<Coordinate
 }
 
 template < class CoordinateType >
-vector<CoordinateType> * to_vec() const
+vector<CoordinateType> * Coord<CoordinateType>::to_vec() const
 {
 	vector<CoordinateType> * res = new vector<CoordinateType>(Coord<CoordinateType>::mDefDims);
 	for (int i = 0; i < Coord<CoordinateType>::mDefDims; i++)
@@ -372,7 +400,7 @@ throw(OutOfBoundError)
 	if (this->CheckBounds(index)) {
 		return mCV[index];
 	}
-	throw OutOfBoundError();
+	throw OutOfBoundError(__FILE__, __LINE__);
 }
 
 

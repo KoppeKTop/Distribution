@@ -40,7 +40,3 @@ void Indexer::to_begin()
 	_is_last = false;
 }
 
-bool Indexer::is_last()
-{
-	return _is_last;
-}

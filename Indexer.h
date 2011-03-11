@@ -17,7 +17,8 @@ public:
 	vector<int> curr()	const
 	{	return _curr;	}
 	void to_begin();
-	bool is_last();
+	bool is_last()	const
+	{	return _is_last;	}
 private:
 	vector<int> _curr;
 	vector<int> _size;
