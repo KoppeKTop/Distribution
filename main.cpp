@@ -35,23 +35,21 @@ bool is_overlapped(const dCoord & sph1, const dCoord & sph2)
 
 int divisions = 30;
 
-CoordVec * get_map()
-//(double radius, double a)
+CoordVec * get_map(double radius, double a)
 // radius – радиус сферы
 // a – сторона куба (квадрата)
 {
-	static CoordVec * map = NULL;
-	if (map) {
-		return map;
-	}
+	CoordVec * map = NULL;
 	
 	dCoord centre;
+	int divCnt = ceil(radius/a);
+	double centreCoord = divCnt / 2.0;
 	for (int d = 0; d < dCoord::GetDefDims(); ++d) {
-		centre[d] = divisions / 2.0;
+		centre[d] = centreCoord;
 	}
 	
 	map = new CoordVec;
-	vector<int> sz(iCoord::GetDefDims(), divisions);
+	vector<int> sz(iCoord::GetDefDims(), divCnt);
 	Indexer indx(sz);
 	dCoord curr_coord;
 	iCoord curr_icoord;
@@ -59,7 +57,7 @@ CoordVec * get_map()
 		vector<int> curr_vec = indx.curr();
 		for (int d = 0; d < curr_vec.size(); ++d) {
 			curr_coord[d] = curr_vec[d] + 0.5;
-			curr_icoord[d] = curr_vec[d] - divisions/2;
+			curr_icoord[d] = curr_vec[d] - divCnt/2;
 		}
 		if (is_overlapped(centre, curr_coord)) {
 			map->push_back(curr_icoord);
@@ -69,9 +67,8 @@ CoordVec * get_map()
 	return map;
 }
 
-void blank_space(GraphField & fld, const dCoord & center)
+void blank_space(GraphField & fld, const dCoord & center, const CoordVec * map)
 {
-	CoordVec * map = get_map();
 	iCoord icenter;
 	for (int d = 0; d < iCoord::GetDefDims(); ++d) {
 		icenter[d] = (int)center[d];
@@ -94,13 +91,14 @@ bool is_point_overlap_spheres(const SphereVec & spheres, const dCoord & curr_coo
 }
 
 
-double getVolume(const SphereVec & spheres, const Rect & box, double poreSize)
+double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, double sq_len)
 {
 	iCoord fld_size;
 	dCoord zero_pnt;
 	dCoord scale;
 	
-	double sq_len = poreSize/divisions; // Cube size (size of one division)
+	//double sq_len = poreSize/divisions; // Cube size (size of one division)
+	double radius = poreSize/2.0;
 	for (int dim = 0; dim < iCoord::GetDefDims(); ++dim) {
 		scale[dim] = sq_len;
 		fld_size[dim] = (int)((box.maxCoord[dim] - box.minCoord[dim]) / sq_len + 1);
@@ -109,13 +107,14 @@ double getVolume(const SphereVec & spheres, const Rect & box, double poreSize)
 	scale[iCoord::GetDefDims()] = 1; // scale of radius
 	
 	GraphField fld(fld_size);
+	CoordVec * map = get_map(radius, sq_len);
 	// Mom, forgive me!
 	if (iCoord::GetDefDims() == 2) {
 		for (double i = divisions / 2.0; i <= fld_size[0]-divisions/2.0; i+=1) {
 			for (double j = divisions / 2.0; j <= fld_size[1] - divisions/2.0; j+=1) {
 				dCoord curr_coord(i, j, poreSize/2.0);
 				if (!is_point_overlap_spheres(spheres, curr_coord * scale + zero_pnt)) {
-					blank_space(fld, curr_coord);
+					blank_space(fld, curr_coord, map);
 				}
 			}
 		}
@@ -126,13 +125,14 @@ double getVolume(const SphereVec & spheres, const Rect & box, double poreSize)
 					dCoord curr_coord(i, j, k, poreSize/2.0);
 					
 					if (!is_point_overlap_spheres(spheres, curr_coord * scale + zero_pnt)) {
-						blank_space(fld, curr_coord);
+						blank_space(fld, curr_coord, map);
 					}
 				}
 			}
 		}
 	}
 	
+	delete map;
 	double one_cell_vol = pow(sq_len, iCoord::GetDefDims());
 	int cells_cnt = fld.CountSet();
 	return cells_cnt * one_cell_vol;
@@ -159,9 +159,10 @@ vector<double> getDistribution(const SphereVec & spheres, double minPores, doubl
 	}
 	
 	vector<double> result;
+	double sq_len = minPores/divisions;
 	for (double poreSize = minPores; poreSize <= maxPores; poreSize += h) {
 		cout << "For pore size " << poreSize;
-		result.push_back(getVolume(spheres, box, poreSize));
+		result.push_back(getVolume(spheres, box, poreSize, sq_len));
 		cout << " " << result.back() << endl;
 	}
 	return result;
