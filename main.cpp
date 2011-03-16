@@ -97,8 +97,8 @@ double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, d
 	dCoord zero_pnt;
 	dCoord scale;
 	
-	//double sq_len = poreSize/divisions; // Cube size (size of one division)
 	double radius = poreSize/2.0;
+	int divCnt = ceil(radius/sq_len);
 	for (int dim = 0; dim < iCoord::GetDefDims(); ++dim) {
 		scale[dim] = sq_len;
 		fld_size[dim] = (int)((box.maxCoord[dim] - box.minCoord[dim]) / sq_len + 1);
@@ -110,19 +110,19 @@ double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, d
 	CoordVec * map = get_map(radius, sq_len);
 	// Mom, forgive me!
 	if (iCoord::GetDefDims() == 2) {
-		for (double i = divisions / 2.0; i <= fld_size[0]-divisions/2.0; i+=1) {
-			for (double j = divisions / 2.0; j <= fld_size[1] - divisions/2.0; j+=1) {
-				dCoord curr_coord(i, j, poreSize/2.0);
+		for (double i = divCnt / 2.0; i <= fld_size[0]-divCnt/2.0; i+=1) {
+			for (double j = divCnt / 2.0; j <= fld_size[1] - divCnt/2.0; j+=1) {
+				dCoord curr_coord(i, j, radius);
 				if (!is_point_overlap_spheres(spheres, curr_coord * scale + zero_pnt)) {
 					blank_space(fld, curr_coord, map);
 				}
 			}
 		}
 	} else {
-		for (double i = divisions / 2.0; i <= fld_size[0]-divisions/2.0; i += 1) {
-			for (double j = divisions / 2.0; j <= fld_size[1] - divisions/2.0; j += 1) {
-				for (double k = divisions / 2.0; k <= fld_size[2] - divisions/2.0; k += 1) {
-					dCoord curr_coord(i, j, k, poreSize/2.0);
+		for (double i = divCnt / 2.0; i <= fld_size[0]-divCnt/2.0; i += 1) {
+			for (double j = divCnt / 2.0; j <= fld_size[1] - divCnt/2.0; j += 1) {
+				for (double k = divCnt / 2.0; k <= fld_size[2] - divCnt/2.0; k += 1) {
+					dCoord curr_coord(i, j, k, radius);
 					
 					if (!is_point_overlap_spheres(spheres, curr_coord * scale + zero_pnt)) {
 						blank_space(fld, curr_coord, map);
