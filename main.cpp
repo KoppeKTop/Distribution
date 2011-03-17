@@ -44,9 +44,10 @@ CoordVec * get_map(double radius, double a)
 	dCoord centre;
 	int divCnt = ceil(radius/a);
 	double centreCoord = divCnt / 2.0;
-	for (int d = 0; d < dCoord::GetDefDims(); ++d) {
+	for (int d = 0; d < dCoord::GetDefDims()-1; ++d) {
 		centre[d] = centreCoord;
 	}
+	centre[dCoord::GetDefDims()-1] = radius;
 	
 	map = new CoordVec;
 	vector<int> sz(iCoord::GetDefDims(), divCnt);
@@ -91,22 +92,23 @@ bool is_point_overlap_spheres(const SphereVec & spheres, const dCoord & curr_coo
 }
 
 
-double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, double sq_len)
+double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, double sq_len, GraphField & fld)
 {
-	iCoord fld_size;
+	iCoord fld_size = fld.size();
 	dCoord zero_pnt;
 	dCoord scale;
 	
+	int prev_cells_cnt = fld.CountSet();
+	
 	double radius = poreSize/2.0;
-	int divCnt = ceil(radius/sq_len);
+	int divCnt = ceil(poreSize/sq_len);
+	printf("Division count = %d\n", divCnt);
 	for (int dim = 0; dim < iCoord::GetDefDims(); ++dim) {
 		scale[dim] = sq_len;
-		fld_size[dim] = (int)((box.maxCoord[dim] - box.minCoord[dim]) / sq_len + 1);
 		zero_pnt[dim] = box.minCoord[dim];
 	}
 	scale[iCoord::GetDefDims()] = 1; // scale of radius
 	
-	GraphField fld(fld_size);
 	CoordVec * map = get_map(radius, sq_len);
 	// Mom, forgive me!
 	if (iCoord::GetDefDims() == 2) {
@@ -134,7 +136,7 @@ double getVolume(const SphereVec & spheres, const Rect & box, double poreSize, d
 	
 	delete map;
 	double one_cell_vol = pow(sq_len, iCoord::GetDefDims());
-	int cells_cnt = fld.CountSet();
+	int cells_cnt = fld.CountSet() - prev_cells_cnt;
 	return cells_cnt * one_cell_vol;
 }
 
@@ -160,10 +162,22 @@ vector<double> getDistribution(const SphereVec & spheres, double minPores, doubl
 	
 	vector<double> result;
 	double sq_len = minPores/divisions;
+	// Create one field per all sizes
+	iCoord fld_size;
+	for (int dim = 0; dim < iCoord::GetDefDims(); ++dim) {
+		fld_size[dim] = (int)((box.maxCoord[dim] - box.minCoord[dim]) / sq_len + 1);
+	}
+	GraphField fld(fld_size);
+	cout << "Field size: " << fld_size << endl;
+	
+	vector<double> poreSizes;
 	for (double poreSize = minPores; poreSize <= maxPores; poreSize += h) {
-		cout << "For pore size " << poreSize;
-		result.push_back(getVolume(spheres, box, poreSize, sq_len));
-		cout << " " << result.back() << endl;
+		poreSizes.push_back(poreSize);
+	}
+	for (int poreSizeIdx = poreSizes.size()-1; poreSizeIdx >= 0; --poreSizeIdx) {
+		cout << "For pore size " << poreSizes[poreSizeIdx] << endl;
+		result.push_back(getVolume(spheres, box, poreSizes[poreSizeIdx], sq_len, fld));
+		cout << "Result: " << result.back() << endl;
 	}
 	return result;
 }

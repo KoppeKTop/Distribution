@@ -7,9 +7,8 @@
 		addToTargets = (
 		);
 		breakpoints = (
-			55F3AD5112B7F13800A09716 /* GraphField.cpp:63 */,
 			55F3AD5312B7F14200A09716 /* GraphField.cpp:85 */,
-			55F3AD6B12B7FC1700A09716 /* GraphField.cpp:234 */,
+			55F3AD6B12B7FC1700A09716 /* GraphField.cpp:236 */,
 			55F3AD6F12B7FC3C00A09716 /* Coord.cpp:83 */,
 			55F3AD7112B7FC4300A09716 /* Coord.cpp:72 */,
 		);
@@ -173,6 +172,15 @@
 			55B74FF812F42DA7007DF61D = 55B74FF812F42DA7007DF61D /* PBXTextBookmark */;
 			55DFE2C91330A88A0095C127 /* PBXTextBookmark */ = 55DFE2C91330A88A0095C127 /* PBXTextBookmark */;
 			55DFE2CF1330A8950095C127 /* PBXTextBookmark */ = 55DFE2CF1330A8950095C127 /* PBXTextBookmark */;
+			55DFE2DC1330AC8A0095C127 /* PBXTextBookmark */ = 55DFE2DC1330AC8A0095C127 /* PBXTextBookmark */;
+			55DFE2DD1330B8550095C127 /* PBXTextBookmark */ = 55DFE2DD1330B8550095C127 /* PBXTextBookmark */;
+			55DFE2DE1330CD840095C127 /* PBXTextBookmark */ = 55DFE2DE1330CD840095C127 /* PBXTextBookmark */;
+			55DFE2DF1330CE680095C127 /* PBXTextBookmark */ = 55DFE2DF1330CE680095C127 /* PBXTextBookmark */;
+			55DFE2E41332048E0095C127 /* PBXTextBookmark */ = 55DFE2E41332048E0095C127 /* PBXTextBookmark */;
+			55DFE2E51332048E0095C127 /* PBXTextBookmark */ = 55DFE2E51332048E0095C127 /* PBXTextBookmark */;
+			55DFE2E61332048E0095C127 /* PBXTextBookmark */ = 55DFE2E61332048E0095C127 /* PBXTextBookmark */;
+			55DFE2E71332048E0095C127 /* PBXTextBookmark */ = 55DFE2E71332048E0095C127 /* PBXTextBookmark */;
+			55DFE2E8133205410095C127 /* PBXTextBookmark */ = 55DFE2E8133205410095C127 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 551EDA2412B6994400BC6901 /* Source Control */;
 		userBuildSettings = {
@@ -180,9 +188,9 @@
 	};
 	08FB7796FE84155DC02AAC07 /* main.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {956, 3276}}";
-			sepNavSelRange = "{2092, 0}";
-			sepNavVisRange = "{1742, 1154}";
+			sepNavIntBoundsRect = "{{0, 0}, {956, 3094}}";
+			sepNavSelRange = "{4933, 0}";
+			sepNavVisRange = "{4280, 1154}";
 			sepNavWindowFrame = "{{64, 105}, {1147, 668}}";
 		};
 	};
@@ -322,17 +330,17 @@
 	};
 	551EDA2712B699A000BC6901 /* GraphField.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 1118}}";
+			sepNavIntBoundsRect = "{{0, 0}, {956, 1118}}";
 			sepNavSelRange = "{1550, 0}";
-			sepNavVisRange = "{1118, 648}";
+			sepNavVisRange = "{707, 947}";
 			sepNavWindowFrame = "{{87, 84}, {1147, 668}}";
 		};
 	};
 	551EDA2812B699A000BC6901 /* GraphField.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 3432}}";
-			sepNavSelRange = "{143, 0}";
-			sepNavVisRange = "{312, 701}";
+			sepNavIntBoundsRect = "{{0, 0}, {956, 3393}}";
+			sepNavSelRange = "{2512, 0}";
+			sepNavVisRange = "{1984, 832}";
 			sepNavWindowFrame = "{{64, 105}, {1147, 668}}";
 		};
 	};
@@ -377,7 +385,7 @@
 		comments = "'a' was not declared in this scope";
 		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
 		rLen = 1;
-		rLoc = 100;
+		rLoc = 104;
 		rType = 1;
 	};
 	559E89671330A87E008EDD64 /* PBXTextBookmark */ = {
@@ -385,7 +393,7 @@
 		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
 		name = "main.cpp: 101";
 		rLen = 0;
-		rLoc = 2177;
+		rLoc = 2292;
 		rType = 0;
 		vrLen = 1239;
 		vrLoc = 1742;
@@ -456,7 +464,7 @@
 		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
 		name = "main.cpp: 101";
 		rLen = 0;
-		rLoc = 2177;
+		rLoc = 2292;
 		rType = 0;
 		vrLen = 1168;
 		vrLoc = 1742;
@@ -466,28 +474,100 @@
 		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
 		name = "main.cpp: 95";
 		rLen = 0;
-		rLoc = 2092;
+		rLoc = 2154;
 		rType = 0;
 		vrLen = 1154;
 		vrLoc = 1742;
 	};
-	55F3AD5112B7F13800A09716 /* GraphField.cpp:63 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 551EDA2812B699A000BC6901 /* GraphField.cpp */;
-		functionName = "ChildNode::IsSet(const Coord &c)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 63;
-		location = Distribution;
-		modificationTime = 321955986.108716;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
+	55DFE2DC1330AC8A0095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 102";
+		rLen = 0;
+		rLoc = 2370;
+		rType = 0;
+		vrLen = 842;
+		vrLoc = 0;
+	};
+	55DFE2DD1330B8550095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 101";
+		rLen = 0;
+		rLoc = 2319;
+		rType = 0;
+		vrLen = 1274;
+		vrLoc = 2091;
+	};
+	55DFE2DE1330CD840095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 50";
+		rLen = 0;
+		rLoc = 1075;
+		rType = 0;
+		vrLen = 1040;
+		vrLoc = 741;
+	};
+	55DFE2DF1330CE680095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 110";
+		rLen = 0;
+		rLoc = 2542;
+		rType = 0;
+		vrLen = 1581;
+		vrLoc = 2864;
+	};
+	55DFE2E41332048E0095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 551EDA2812B699A000BC6901 /* GraphField.cpp */;
+		name = "GraphField.cpp: 124";
+		rLen = 0;
+		rLoc = 2512;
+		rType = 0;
+		vrLen = 832;
+		vrLoc = 1984;
+	};
+	55DFE2E51332048E0095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 551EDA2712B699A000BC6901 /* GraphField.h */;
+		name = "GraphField.h: 73";
+		rLen = 0;
+		rLoc = 1550;
+		rType = 0;
+		vrLen = 947;
+		vrLoc = 707;
+	};
+	55DFE2E61332048E0095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 142";
+		rLen = 0;
+		rLoc = 3531;
+		rType = 0;
+		vrLen = 1435;
+		vrLoc = 3057;
+	};
+	55DFE2E71332048E0095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 178";
+		rLen = 0;
+		rLoc = 4998;
+		rType = 0;
+		vrLen = 1156;
+		vrLoc = 4280;
+	};
+	55DFE2E8133205410095C127 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* main.cpp */;
+		name = "main.cpp: 177";
+		rLen = 0;
+		rLoc = 4933;
+		rType = 0;
+		vrLen = 1154;
+		vrLoc = 4280;
 	};
 	55F3AD5312B7F14200A09716 /* GraphField.cpp:85 */ = {
 		isa = PBXFileBreakpoint;
@@ -507,7 +587,7 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
-	55F3AD6B12B7FC1700A09716 /* GraphField.cpp:234 */ = {
+	55F3AD6B12B7FC1700A09716 /* GraphField.cpp:236 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -519,7 +599,7 @@
 		functionName = "GraphField::Set(const Coord & c)";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 234;
+		lineNumber = 236;
 		location = Distribution;
 		modificationTime = 321955986.149282;
 		originalNumberOfMultipleMatches = 1;

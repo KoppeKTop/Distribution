@@ -326,7 +326,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>55DFE2CF1330A8950095C127</string>
+										<string>55DFE2E8133205410095C127</string>
 										<key>history</key>
 										<array>
 											<string>55B74FF512F42DA7007DF61D</string>
@@ -335,12 +335,12 @@
 											<string>55B74FF812F42DA7007DF61D</string>
 											<string>55062FCC131DEBFC00C7C54F</string>
 											<string>55062FCD131DEBFC00C7C54F</string>
-											<string>55062FCE131DEBFC00C7C54F</string>
-											<string>55062FCF131DEBFC00C7C54F</string>
 											<string>55113313132F831000829D80</string>
 											<string>559E895213309F64008EDD64</string>
 											<string>559E89641330A87E008EDD64</string>
-											<string>559E89671330A87E008EDD64</string>
+											<string>55DFE2E41332048E0095C127</string>
+											<string>55DFE2E51332048E0095C127</string>
+											<string>55DFE2E61332048E0095C127</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -538,7 +538,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>55DFE2D71330A8950095C127</string>
+		<string>55DFE2E2133202130095C127</string>
 		<string>55DFE2D81330A8950095C127</string>
 		<string>55DFE2D91330A8950095C127</string>
 		<string>1C78EAAD065D492600B07095</string>
@@ -1176,8 +1176,8 @@
 			<true/>
 			<key>TableOfContents</key>
 			<array>
-				<string>5525B5B912F4C217009B1643</string>
-				<string>5525B5BA12F4C217009B1643</string>
+				<string>55DFE2E2133202130095C127</string>
+				<string>55DFE2E3133202130095C127</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
 				<string>1CA1AED706398EBD00589147</string>
 			</array>
@@ -1186,9 +1186,9 @@
 			<key>WindowString</key>
 			<string>70 346 744 409 0 0 1280 778 </string>
 			<key>WindowToolGUID</key>
-			<string>5525B5B912F4C217009B1643</string>
+			<string>55DFE2E2133202130095C127</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
