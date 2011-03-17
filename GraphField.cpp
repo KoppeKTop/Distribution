@@ -119,6 +119,8 @@ int ChildNode::CountSet() const
 		for (int i = 0; i < sz; ++i) {
 			res += countbits(_data[i]);
 		}
+	} else if (_nodeState == STATE_FULL) {
+		res = GetSize();
 	}
 	return res;
 }
