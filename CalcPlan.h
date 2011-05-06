@@ -17,10 +17,10 @@ struct TCalcPlan
 	TCalcPlan(int argc, char * const argv[])
 	{
 		FILE * ifile;
-		char usage_string[] = "Usage: %s points_file division_number\n";
+		char usage_string[] = "Usage: %s points_file division_number [float]\n";
 		
-		// 1. Must be 3 parameters
-		if (argc != 3) {
+		// 1. Must be at least 3 parameters
+		if (argc < 3) {
 			fprintf(stderr, usage_string, argv[0]);
 			exit(20);
 		}
@@ -41,9 +41,17 @@ struct TCalcPlan
 			fprintf(stderr, usage_string, argv[0]);
 			exit(22);
 		}
+        
+        // 4. set is_float flag
+        if (argc > 3 && strcmp(argv[3], "float") == 0) {
+            is_float = true;
+        } else {
+            is_float = false;
+        }
 	}
 	char * filename;
 	int divisions;
+    bool is_float;
 };
 
 #endif 
