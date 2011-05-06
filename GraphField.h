@@ -11,8 +11,12 @@
 #define GRAPHFIELD_H_
 
 #include "Coord.h"
+#include <boost/thread/mutex.hpp>
 
-const int BLOCK_DIM_SIZE = 16;
+using namespace boost;
+
+const int BLOCK_DIM_SIZE = 16; // must be 2^n
+const int BLOCK_DIM_MASK = BLOCK_DIM_SIZE-1;
 const int BITES_IN_BYTE = 8;
 
 const char STATE_EMPTY = 1;
@@ -57,6 +61,7 @@ protected:
 private:
 	unsigned char * _data;
 	char _nodeState;
+    mutex * _locker;
 };
 
 class GraphField

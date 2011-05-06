@@ -11,13 +11,16 @@
 #include "GraphField.h"
 #include <iostream>
 #include <math.h>
+#include <boost/thread/mutex.hpp>
 using std::cerr;
 using std::endl;
+using namespace boost;
 
 ChildNode::ChildNode()
 {
 	_nodeState = STATE_EMPTY;
 	_data = 0;
+    _locker = new mutex();
 }
 
 void ChildNode::GetIndex(const iCoord &c, int & charNum, int & biteNum) const
@@ -49,42 +52,54 @@ int ChildNode::GetSize()
 
 bool ChildNode::IsSet(const iCoord &c) const
 {
-	if (_nodeState == STATE_INPROGRESS) {
-		int charNum, biteNum;
-		GetIndex(c, charNum, biteNum);
-		return (bool)((_data[charNum] >> biteNum) & 1);
-	}
-	if (_nodeState == STATE_EMPTY) {
-		return false;
-	}
-	if (_nodeState == STATE_FULL) {
-		return true;
-	}
-	cerr << "Unknown state: " << (int)_nodeState << endl;
-	exit(10);
+    bool res;
+    _locker->lock();
+    switch (_nodeState) {
+        case STATE_INPROGRESS:
+            int charNum, biteNum;
+            GetIndex(c, charNum, biteNum);
+            res = (bool)((_data[charNum] >> biteNum) & 1);
+            break;
+        case STATE_EMPTY:
+            res = false;
+            break;
+        case STATE_FULL:
+            res = true;
+            break;
+        default:
+            cerr << "Unknown state: " << (int)_nodeState << endl;
+            exit(10);
+            break;
+    }
+    _locker->unlock();
+    return res;
 }
 
 void ChildNode::Set(const iCoord &c)
 {
 	int arrSize = GetSize()/BITES_IN_BYTE;
-	switch (_nodeState) {
-		case STATE_EMPTY:
-			_data = new unsigned char[arrSize];
-			INIT_WITH_VAL(_data, arrSize, 0);
-			_nodeState = STATE_INPROGRESS;
-		case STATE_INPROGRESS:
-			int charNum, biteNum;
-			GetIndex(c, charNum, biteNum);
-			_data[charNum] |= (1 << biteNum);
-			CheckState();
-			break;
-		case STATE_FULL:
-			// nothing
-			break;
-		default:
-			cerr << "Unknown state\n";
-			exit(7);
-	}
+    this->_locker->lock();
+    {
+        switch (_nodeState) {
+            case STATE_EMPTY:
+                _data = new unsigned char[arrSize];
+                INIT_WITH_VAL(_data, arrSize, 0);
+                _nodeState = STATE_INPROGRESS;
+            case STATE_INPROGRESS:
+                int charNum, biteNum;
+                GetIndex(c, charNum, biteNum);
+                _data[charNum] |= (1 << biteNum);
+                CheckState();
+                break;
+            case STATE_FULL:
+                // nothing
+                break;
+            default:
+                cerr << "Unknown state\n";
+                exit(7);
+        }
+    }
+    _locker->unlock();
 }
 
 unsigned char countbits_bk_method (unsigned char b)
@@ -114,6 +129,7 @@ int countbits(unsigned char c)
 int ChildNode::CountSet() const
 {
 	int res = 0;
+    _locker->lock();
 	if (_data) {
 		const int sz = GetSize()/BITES_IN_BYTE;
 		for (int i = 0; i < sz; ++i) {
@@ -122,6 +138,7 @@ int ChildNode::CountSet() const
 	} else if (_nodeState == STATE_FULL) {
 		res = GetSize();
 	}
+    _locker->unlock();
 	return res;
 }
 
@@ -176,6 +193,9 @@ ChildNode::~ChildNode()
 {
 	if (_data)
 		delete [] _data;
+    if (_locker) {
+        delete _locker;
+    }
 }
 
 GraphField::GraphField(const iCoord & size, int defValue, int fillValue):
@@ -218,7 +238,10 @@ int GraphField::Get(const iCoord & c) const throw(OutOfBoundError)
 {
 	if (InBounds(c)) {
 		int ind = GetNodeIndex(c);
-		if (_children[ind].IsSet(c % BLOCK_DIM_SIZE))
+        iCoord internal_coord(c[0] & BLOCK_DIM_MASK, 
+                              c[1] & BLOCK_DIM_MASK,
+                              c[2] & BLOCK_DIM_MASK);
+		if (_children[ind].IsSet(internal_coord))
 			return _fillValue;
 		else
 			return _defValue;
@@ -230,7 +253,12 @@ void GraphField::Set(const iCoord & c) throw(OutOfBoundError)
 {
 	if (InBounds(c)) {
 		int ind = GetNodeIndex(c);
-		_children[ind].Set(c % BLOCK_DIM_SIZE);
+        iCoord internal_coord(c[0] & BLOCK_DIM_MASK, 
+                              c[1] & BLOCK_DIM_MASK,
+                              c[2] & BLOCK_DIM_MASK);
+        if (! _children[ind].IsSet(internal_coord)) {
+            _children[ind].Set(internal_coord);
+        }
 		return;
 	}
 	throw OutOfBoundError(__FILE__, __LINE__);
