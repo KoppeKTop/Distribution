@@ -65,9 +65,15 @@ public:
 	virtual ~Coord();
 	
 	CoordinateType GetCoord(int) const
-	throw(OutOfBoundError);
+#ifdef BOUNDS_CHECK
+	throw(OutOfBoundError)
+#endif
+    ;
 	void SetCoord(int, CoordinateType)
-	throw(OutOfBoundError);
+#ifdef BOUNDS_CHECK
+	throw(OutOfBoundError)
+#endif
+    ;
 	void SetPosition(CoordinateType, CoordinateType, CoordinateType=0, CoordinateType=0);
 	
 	Coord operator+ (const Coord &) const;
@@ -98,9 +104,16 @@ public:
 	}
 	
 	CoordinateType& operator[](const int ind)
-	throw(OutOfBoundError);
+#ifdef BOUNDS_CHECK
+	throw(OutOfBoundError)
+#endif
+    ;
+    
 	CoordinateType operator[](const int ind) const
-	throw(OutOfBoundError)	{return GetCoord(ind); }
+#ifdef BOUNDS_CHECK
+	throw(OutOfBoundError)	
+#endif
+    {return GetCoord(ind); }
 	vector<CoordinateType> * to_vec() const;
 private:
 	CoordinateType mCV[MAX_DIMS];
@@ -161,34 +174,45 @@ Coord<CoordinateType>::~Coord()
 };
 
 template < class CoordinateType >
-bool Coord<CoordinateType>::CheckBounds(int index) const
+inline bool Coord<CoordinateType>::CheckBounds(int index) const
 {
 	return (0 <= index && index < Coord<CoordinateType>::mDefDims);
 }
 
 template < class CoordinateType >
-CoordinateType Coord<CoordinateType>::GetCoord(int num) const
+inline CoordinateType Coord<CoordinateType>::GetCoord(int num) const
+#ifdef BOUNDS_CHECK
 throw(OutOfBoundError)
+#endif
 {
-	if (this->CheckBounds(num)) {
+#ifdef BOUNDS_CHECK
+	if (this->CheckBounds(num))
+#endif
 		return mCV[num];
-	}
+#ifdef BOUNDS_CHECK
 	throw OutOfBoundError(__FILE__, __LINE__);
+#endif
 }
 
 template < class CoordinateType >
-void Coord<CoordinateType>::SetCoord(int num, CoordinateType val) 
+inline void Coord<CoordinateType>::SetCoord(int num, CoordinateType val) 
+#ifdef BOUNDS_CHECK
 throw(OutOfBoundError)
+#endif
 {
+#ifdef BOUNDS_CHECK
 	if (this->CheckBounds(num)) {
+#endif
 		this->mCV[num] = val;
+#ifdef BOUNDS_CHECK
 		return;
 	}
 	throw OutOfBoundError(__FILE__, __LINE__);
+#endif
 }
 
 template < class CoordinateType >
-void Coord<CoordinateType>::SetPosition(CoordinateType X, CoordinateType Y, CoordinateType Z, CoordinateType V)
+inline void Coord<CoordinateType>::SetPosition(CoordinateType X, CoordinateType Y, CoordinateType Z, CoordinateType V)
 {
 	mCV[0] = X;
 	mCV[1] = Y;
@@ -395,7 +419,9 @@ ostream& operator <<(ostream& stream, const Coord<CoordinateType> & c)
 
 template < class CoordinateType >
 CoordinateType& Coord<CoordinateType>::operator[](const int index)
+#ifdef BOUNDS_CHECK
 throw(OutOfBoundError)
+#endif
 {
 	if (this->CheckBounds(index)) {
 		return mCV[index];
