@@ -37,8 +37,8 @@ void ChildNode::GetIndex(const iCoord &c, int & charNum, int & biteNum) const
 		num += c[dim]*multiply;
 		multiply *= BLOCK_DIM_SIZE;
 	}
-	charNum = num / BITES_IN_BYTE;
-	biteNum = num % BITES_IN_BYTE;
+	charNum = num / BITS_IN_BYTE;
+	biteNum = num % BITS_IN_BYTE;
 }
 
 int ChildNode::GetSize() 
@@ -77,7 +77,7 @@ bool ChildNode::IsSet(const iCoord &c) const
 
 void ChildNode::Set(const iCoord &c)
 {
-	int arrSize = GetSize()/BITES_IN_BYTE;
+	int arrSize = GetSize()/BITS_IN_BYTE;
     this->_locker->lock();
     {
         switch (_nodeState) {
@@ -131,7 +131,7 @@ int ChildNode::CountSet() const
 	int res = 0;
     _locker->lock();
 	if (_data) {
-		const int sz = GetSize()/BITES_IN_BYTE;
+		const int sz = GetSize()/BITS_IN_BYTE;
 		for (int i = 0; i < sz; ++i) {
 			res += countbits(_data[i]);
 		}
@@ -147,7 +147,7 @@ void ChildNode::CheckState()
 	if (_nodeState != STATE_INPROGRESS) {
 		return;
 	}
-	int bytesCnt = ChildNode::GetSize()/BITES_IN_BYTE;
+	int bytesCnt = ChildNode::GetSize()/BITS_IN_BYTE;
 	bool isFull, isEmpty;
 	isFull = isEmpty = true;
 	for (int byteIndex = 0; byteIndex < bytesCnt; ++byteIndex) {

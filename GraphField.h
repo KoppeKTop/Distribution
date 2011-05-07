@@ -17,7 +17,7 @@ using namespace boost;
 
 const int BLOCK_DIM_SIZE = 16; // must be 2^n
 const int BLOCK_DIM_MASK = BLOCK_DIM_SIZE-1;
-const int BITES_IN_BYTE = 8;
+const int BITS_IN_BYTE = 8;
 
 const char STATE_EMPTY = 1;
 const char STATE_INPROGRESS = 2;
