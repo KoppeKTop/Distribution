@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		551EDA2912B699A000BC6901 /* GraphField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 551EDA2812B699A000BC6901 /* GraphField.cpp */; };
+		55CAA09D13772FE80019AD61 /* BitOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CAA09913772FE80019AD61 /* BitOperations.cpp */; };
 		55CCE87A12BF933C0067D845 /* Indexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CCE87912BF933C0067D845 /* Indexer.cpp */; };
 		55F3AE0212B89C2100A09716 /* GraphFieldTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F3AE0112B89C2100A09716 /* GraphFieldTest.cpp */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
@@ -30,8 +31,13 @@
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		551EDA2712B699A000BC6901 /* GraphField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphField.h; sourceTree = "<group>"; };
-		551EDA2812B699A000BC6901 /* GraphField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphField.cpp; sourceTree = "<group>"; };
+		551EDA2812B699A000BC6901 /* GraphField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GraphField.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		551EDA2A12B69B1600BC6901 /* Coord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coord.h; sourceTree = "<group>"; };
+		55CAA09813772FE80019AD61 /* BitField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitField.h; sourceTree = "<group>"; };
+		55CAA09913772FE80019AD61 /* BitOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitOperations.cpp; sourceTree = "<group>"; };
+		55CAA09A13772FE80019AD61 /* BitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitOperations.h; sourceTree = "<group>"; };
+		55CAA09B13772FE80019AD61 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Field.h; sourceTree = "<group>"; };
+		55CAA09C13772FE80019AD61 /* PlainField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlainField.h; sourceTree = "<group>"; };
 		55CCE87812BF933C0067D845 /* Indexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Indexer.h; sourceTree = "<group>"; };
 		55CCE87912BF933C0067D845 /* Indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Indexer.cpp; sourceTree = "<group>"; };
 		55CD25481303EF0C00E781D3 /* CalcPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalcPlan.h; sourceTree = "<group>"; };
@@ -69,6 +75,11 @@
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
 				551EDA2712B699A000BC6901 /* GraphField.h */,
 				551EDA2812B699A000BC6901 /* GraphField.cpp */,
+				55CAA09813772FE80019AD61 /* BitField.h */,
+				55CAA09913772FE80019AD61 /* BitOperations.cpp */,
+				55CAA09A13772FE80019AD61 /* BitOperations.h */,
+				55CAA09B13772FE80019AD61 /* Field.h */,
+				55CAA09C13772FE80019AD61 /* PlainField.h */,
 				551EDA2A12B69B1600BC6901 /* Coord.h */,
 				55F3AE0012B89C2100A09716 /* GraphFieldTest.h */,
 				55F3AE0112B89C2100A09716 /* GraphFieldTest.cpp */,
@@ -147,6 +158,7 @@
 				551EDA2912B699A000BC6901 /* GraphField.cpp in Sources */,
 				55F3AE0212B89C2100A09716 /* GraphFieldTest.cpp in Sources */,
 				55CCE87A12BF933C0067D845 /* Indexer.cpp in Sources */,
+				55CAA09D13772FE80019AD61 /* BitOperations.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
