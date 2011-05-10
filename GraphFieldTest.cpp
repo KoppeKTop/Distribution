@@ -20,7 +20,7 @@ static void EmptyTest()
 	cout << "Empty test... ";
 	const int DIM = 20;
 	iCoord size(DIM, DIM);
-	GraphField fld(size);
+	GraphField<char> fld(size);
 	for (int i = 0; i < size[0]; ++i) {
 		for (int j = 0; j < size[1]; ++j) {
 			if (fld.Get(iCoord(i,j))) {
@@ -37,7 +37,7 @@ static void OneCellTest()
 	cout << "One cell test... ";
 	const int DIM = 20;
 	iCoord size(DIM, DIM);
-	GraphField fld(size);
+	GraphField<char> fld(size);
 	iCoord oneCell(19,10);
 	fld.Set(oneCell);
 	for (int i = 0; i < size[0]; ++i) {
@@ -86,7 +86,7 @@ static void ClearTest()
 	cout << "Clear test... ";
 	const int DIM = 20;
 	iCoord size(DIM, DIM);
-	GraphField fld(size);
+	GraphField<char> fld(size);
 	for (int i = 0; i < size[0]; ++i) {
 		for (int j = 0; j < size[1]; ++j) {
 			fld.Set(iCoord(i, j));
@@ -112,7 +112,7 @@ static void OutOfBoundsTest()
 	cout << "Out of bounds test... ";
 	const int DIM = 20;
 	iCoord size(DIM, DIM);
-	GraphField fld(size);
+	GraphField<char> fld(size);
 	bool catched = false;
 	int val;
 	try {
